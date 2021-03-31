@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+
+<body>
+    <section class="section">
+        <h1 class="title is-sized-2">CRUD</h1>
+        <h2 class="subtitle">
+            A simple application to understand the basic <strong>CRUD</strong> functionality.
+        </h2>
+    <div class="section">
+        <div class="columns">
+            <div class="column is-4">
+                <h1 class="title">Input</h1>
+                <form action="add/" method="POST">
+                    {% csrf_token %}
+                    <label class="label">Name</label>
+                    <input class="input" type="text" placeholder="Enter your name" name="fname">
+                    <label class="label mt-2">Surname</label>
+                    <input class="input" type="text" placeholder="Enter your surname" name="surname">
+                    <label class="label mt-2">Contact</label>
+                    <input class="input" type="text" placeholder="Enter your number" name="contact">
+                    
+                    <input type="submit" class="button is-link is-light mt-5" value="Submit">
+                </form>
+            </div>  
+            <div class="column is-8">
+                <h1 class="title">Output</h1>
+
+                <table class="table is-hoverable is-fullwidth is-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Contact No</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in context %}
+                        <tr>
+                            <td>{{ data.fname}}</td>
+                            <td>{{ data.lname}}</td>
+                            <td>{{ data.number}}</td>
+                            <td>{{ data.info_added }}</td>
+                            <td>
+                                <form method="POST" action="edit/{{data.id}}/">  
+                                    {% csrf_token %}
+                                    <a href="{% url 'edit' data.id %}" class="button is-success is-light">Edit</a>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="delete/{{data.id}}/">
+                                    {% csrf_token %}
+                                    <button class="button is-danger is-light">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+</body>
+
+</html>
